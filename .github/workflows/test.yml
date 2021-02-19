@@ -1,0 +1,77 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: 0 0 1 * * # monthly
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache for pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+            ${{ runner.os }}-pip-
+
+      - name: Cache for GRACE
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/python-grace
+          key: python-grace-221.2006.0116
+          restore-keys: |
+            python-grace-
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install --no-root
+
+      - name: Build and install
+        run: poetry install
+
+      - name: Run tests
+        run: poetry run pytest
+
+      - name: Prepare working directories
+        run: mkdir -p testinst/sm/eewwa testinst/mssm/asw1SW1
+
+      - name: Test installation (SM)
+        working-directory: testinst/sm/eewwa
+        run: |
+          poetry run grace template sm/eewwa
+          poetry run grace grc
+          poetry run grace grcfort
+          make all
+          ./gauge
+          ./integ
+          ./spring
+
+      - name: Test installation (MSSM)
+        working-directory: testinst/mssm/asw1SW1
+        run: |
+          poetry run grace template mssm/asw1SW1
+          poetry run grace grc
+          poetry run grace grcfort
+          make all
+          ./gauge
+          ./integ
+          ./spring

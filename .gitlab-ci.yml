@@ -30,7 +30,7 @@ test:
     - poetry install --no-root
   script:
     - poetry install
-    - poetry run task test
+    - poetry run pytest
 
 test-install:
   extends: test
