@@ -299,8 +299,6 @@ def apply_patch(target_dir: Path, patch_dir: Path) -> None:
     # Apply all patch files.
     patch_files = patch_dir.glob("**/*.patch")
     for patch_file in patch_files:
-        target_file = target_dir / patch_file.relative_to(patch_dir)
-        target_file = target_file.parent / target_file.name[:-6]
         patch_set = patch.fromfile(patch_file)
         if not patch_set:
             raise RuntimeError(f"failed to load {patch_file}")
