@@ -99,7 +99,7 @@ addopts = [
 # Set up a development environment.
 setup = "pre-commit install && pre-commit install --hook-type commit-msg"
 
-# Run linters.
+# Run linters (+ fix).
 lint = "pre-commit run --all-files"
 
 # Run tests.
@@ -109,13 +109,11 @@ pre_test = "task grace-build"
 # Build GRACE.
 grace-build = "python build.py"
 
-# Create a patch set.
+# Create a patch set for GRACE.
 grace-diff = "python -c 'import build; build.diff()'"
 
-# Reset the GRACE source tree (original + patch).
+# Reset the GRACE source code tree (original + patch).
 grace-reset = "python -c 'import build; build.reset()'"
-post_grace-reset = "task grace-build"
 
-# Rebuild sdist for a release.
-pre_rebuild = "rm -rf dist"
-rebuild = "poetry build -f sdist"
+# Rebuild GRACE.
+grace-rebuild = "task grace-reset && task grace-build"
