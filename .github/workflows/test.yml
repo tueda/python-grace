@@ -49,29 +49,4 @@ jobs:
         run: poetry install
 
       - name: Run tests
-        run: poetry run pytest
-
-      - name: Prepare working directories
-        run: mkdir -p testinst/sm/eewwa testinst/mssm/asw1SW1
-
-      - name: Test installation (SM)
-        working-directory: testinst/sm/eewwa
-        run: |
-          poetry run grace template sm/eewwa
-          poetry run grace grc
-          poetry run grace grcfort
-          make all
-          ./gauge
-          ./integ
-          ./spring
-
-      - name: Test installation (MSSM)
-        working-directory: testinst/mssm/asw1SW1
-        run: |
-          poetry run grace template mssm/asw1SW1
-          poetry run grace grc
-          poetry run grace grcfort
-          make all
-          ./gauge
-          ./integ
-          ./spring
+        run: poetry run pytest -m ''  # all tests

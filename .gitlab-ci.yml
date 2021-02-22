@@ -30,18 +30,4 @@ test:
     - poetry install --no-root
   script:
     - poetry install
-    - poetry run pytest
-
-test-install:
-  extends: test
-  script:
-    - poetry install
-    - mkdir testdir
-    - cd testdir
-    - poetry run grace template sm/eewwa
-    - poetry run grace grc
-    - poetry run grace grcfort
-    - make all
-    - ./gauge
-    - ./integ
-    - ./spring
+    - poetry run pytest -m ''  # all tests
