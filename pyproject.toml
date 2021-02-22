@@ -93,6 +93,12 @@ addopts = [
     "--doctest-modules",
     "--ignore=_skbuild",
     "--ignore=build.py",
+    "--strict-markers",
+    "-m",
+    "not test_install",
+]
+markers = [
+    "test_install"
 ]
 
 [tool.taskipy.tasks]

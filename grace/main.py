@@ -101,6 +101,11 @@ def _add_raw_commands() -> None:
 _add_raw_commands()
 
 
+def is_raw_command_available(cmd: str) -> bool:
+    """Return `True` if the given raw command is actually available."""
+    return (grace_root / "bin" / cmd).is_file()
+
+
 def invoke_raw_command(cmd: str, args: Sequence[str]) -> None:
     """Invoke the given raw command."""
     cmd_args = (str(grace_root / "bin" / cmd),) + tuple(args)
