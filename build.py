@@ -21,6 +21,11 @@ GRACE_PATCH_DIR = PATCH_DIR / "grace"
 
 def build(setup_kwargs: Dict[str, Any]) -> None:
     """Build the extensions."""
+    # Check the main CMake file.
+    cmake_lists = SRC_DIR / "CMakeLists.txt"
+    if not cmake_lists.is_file():
+        raise RuntimeError(f"{cmake_lists.absolute()} not found")
+
     # Prepare the Grace source files.
     if not GRACE_SRC_DIR.exists():
         reset()
