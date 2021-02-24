@@ -11,8 +11,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
-    runs-on: ubuntu-latest
+        include:
+          - python-version: 3.6
+            cc: gcc-10
+            fc: gfortran-10
+          - python-version: 3.7
+            cc: gcc-10
+            fc: gfortran-10
+          - python-version: 3.8
+            cc: gcc-10
+            fc: gfortran-10
+          - python-version: 3.9
+            cc: gcc-10
+            fc: gfortran-10
+          - python-version: 3.9
+            cc: gcc-8
+            fc: gfortran-8
+          - python-version: 3.9
+            cc: gcc-9
+            fc: gfortran-9
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
@@ -39,10 +57,15 @@ jobs:
           restore-keys: |
             python-grace-
 
-      - name: Install tox
+      - name: Install dependencies
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libmotif-dev
           pip install --upgrade pip
           pip install tox tox-gh-actions
 
       - name: Run tests
-        run: tox
+        run: tox -vvv
+        env:
+          CC: ${{ matrix.cc }}
+          FC: ${{ matrix.fc }}
