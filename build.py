@@ -34,6 +34,7 @@ def build(setup_kwargs: Dict[str, Any]) -> None:
     skbuild.setup(
         **setup_kwargs,
         script_args=["build_ext"],
+        cmake_languages=("C", "Fortran"),
         cmake_source_dir=str(SRC_DIR),
     )
 
