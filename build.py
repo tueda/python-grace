@@ -1,7 +1,7 @@
 """Build script."""
 
 import shutil
-import uuid
+import tempfile
 from pathlib import Path
 from typing import Any, Dict
 
@@ -65,19 +65,14 @@ def reset() -> None:
 
 def diff() -> None:
     """Update the patch set."""
-    temp_original_dir = GRACE_SRC_DIR.parent / (
-        GRACE_SRC_DIR.name + f".tmp{uuid.uuid4()}"
-    )
-    try:
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        temp_path = Path(tmp_dir)
         grace.utils.download_archive(
-            GRACE_URL, GRACE_SHA256, temp_original_dir, normalize_newlines=True
+            GRACE_URL, GRACE_SHA256, temp_path, normalize_newlines=True
         )
         grace.utils.make_patch(
-            temp_original_dir, GRACE_SRC_DIR, GRACE_PATCH_DIR, normalize_newlines=True
+            temp_path, GRACE_SRC_DIR, GRACE_PATCH_DIR, normalize_newlines=True
         )
-    finally:
-        if temp_original_dir.exists():
-            shutil.rmtree(temp_original_dir)
 
 
 if __name__ == "__main__":
