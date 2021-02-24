@@ -50,7 +50,7 @@ appdirs = "^1.4.4"
 click = "^7.1.2"
 patch = "^1.16"
 
-importlib-metadata = {version = "^3.4.0", python = "<3.8"}
+importlib-metadata = {version = "^3.6.0", python = "<3.8"}
 
 [tool.poetry.dev-dependencies]
 cmake = "^3.18.4"
