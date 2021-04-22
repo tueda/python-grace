@@ -89,7 +89,7 @@ def extract_integ_result(result: str) -> Tuple[float, float]:
         return float("nan"), float("nan")
 
 
-@pytest.mark.test_install
+@pytest.mark.test_install()
 def test_sm_eewwa(tmp_path: Path) -> None:
     with chdir(tmp_path):
         runner = CliRunner()
@@ -118,7 +118,7 @@ def test_sm_eewwa(tmp_path: Path) -> None:
         )
 
 
-@pytest.mark.test_install
+@pytest.mark.test_install()
 def test_mssm_asw1sw1(tmp_path: Path) -> None:
     with chdir(tmp_path):
         runner = CliRunner()

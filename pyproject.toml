@@ -55,11 +55,11 @@ importlib-metadata = {version = "^3.6.0", python = "<3.8"}
 [tool.poetry.dev-dependencies]
 cmake = "^3.18.4"
 ninja = "^1.10.0"
-pre-commit = "^2.10.1"
-pytest = "^6.2.2"
+pre-commit = "^2.12.1"
+pytest = "^6.2.3"
 pytest-cov = "^2.11.1"
 scikit-build = "^0.11.1"
-taskipy = "^1.6.0"
+taskipy = "^1.7.0"
 
 [build-system]
 requires = [
