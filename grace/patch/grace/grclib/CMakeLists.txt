@@ -3,13 +3,13 @@ configure_file(config.h.in config.h)
 add_library(
   grclib
   args.c
-  cfbase.c
-  cfconv.c
+  # cfbase.c
+  # cfconv.c
   cfgrf.c
   cfnbase.c
   cfnconv.c
   cmfin.c
-  cmfort.c
+  # cmfort.c
   cmnfort.c
   cmutl.c
   conserv.c
