@@ -60,6 +60,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -qq
+          [ ${{ matrix.cc }} = gcc-8 ] && sudo apt-get install -y -qq g++-8
+          [ ${{ matrix.fc }} = gfortran-8 ] && sudo apt-get install -y -qq gfortran-8
           sudo apt-get install -y -qq libmotif-dev
           pip install --upgrade pip
           pip install tox tox-gh-actions
