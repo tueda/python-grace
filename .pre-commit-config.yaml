@@ -44,6 +44,7 @@ repos:
     rev: v0.812
     hooks:
     -   id: mypy
+        args: []
         additional_dependencies:
         -   pytest==6.2.3
 -   repo: https://github.com/cheshirekow/cmake-format-precommit
