@@ -10,6 +10,8 @@ from typing import Any, Callable, Dict, Optional, Sequence
 
 import click
 
+from .version import __version__
+
 grace_root = Path(__file__).parent
 
 
@@ -33,9 +35,21 @@ class OrderedGroup(click.Group):
         return self.commands
 
 
-@click.group(cls=OrderedGroup, context_settings={"help_option_names": ["-h", "--help"]})
-def main() -> None:  # noqa: D103  # to suppress the help message
-    pass
+@click.group(
+    cls=OrderedGroup,
+    invoke_without_command=True,
+    context_settings={"help_option_names": ["-h", "--help"]},
+)
+@click.pass_context
+@click.option("--version", is_flag=True, help="Show the version.")
+def main(  # noqa: D103  # to suppress the help message
+    ctx: click.Context, version: bool
+) -> None:
+    if ctx.invoked_subcommand is None:
+        if version:
+            click.echo(f"python-grace {__version__}")
+        else:
+            click.echo(main.get_help(ctx))
 
 
 @main.command(no_args_is_help=True)
