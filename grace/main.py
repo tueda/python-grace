@@ -142,6 +142,10 @@ def invoke_raw_command(cmd: str, args: Sequence[str]) -> None:
 def patch_makefile() -> None:
     """Patch Makefile."""
     makefile = Path("Makefile")
+
+    if not makefile.exists():
+        return
+
     lines = makefile.read_text().splitlines()
 
     # We need to provide GRACEROOT.
