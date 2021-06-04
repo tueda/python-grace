@@ -1,33 +1,12 @@
 """Main program."""
 
-import collections
 import shutil
 from pathlib import Path
-from typing import Any, Dict, Optional
 
 import click
 
 from . import GRACE_ROOT, __version__, commands
-
-
-class OrderedGroup(click.Group):
-    """Group preserving the order of subcommands."""
-
-    # See: https://stackoverflow.com/a/58323807
-
-    def __init__(
-        self,
-        name: Optional[str] = None,
-        commands: Optional[Dict[str, click.Command]] = None,
-        **attrs: Dict[str, Any],
-    ) -> None:
-        """Construct a group."""
-        super(OrderedGroup, self).__init__(name, commands, **attrs)
-        self.commands = commands or collections.OrderedDict()
-
-    def list_commands(self, ctx: click.Context) -> Dict[str, click.Command]:
-        """Return a list of subcommands in the order they should appear."""
-        return self.commands
+from .click_ext import OrderedGroup
 
 
 @click.group(
