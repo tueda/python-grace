@@ -9,6 +9,7 @@ from typing import Iterator, Sequence, Tuple
 import pytest
 from click.testing import CliRunner
 
+import grace.commands
 import grace.main
 
 
@@ -96,7 +97,7 @@ def test_sm_eewwa(tmp_path: Path) -> None:
 
         run_grace(runner, ["template", "sm/eewwa"])
         run_grace(runner, ["grc"])
-        if grace.main.is_raw_command_available("gracefig"):
+        if grace.commands.gracefig.available:
             run_grace(runner, ["gracefig", "-p"])
         run_grace(runner, ["grcfort"])
         run_make(["all"])
@@ -125,7 +126,7 @@ def test_mssm_asw1sw1(tmp_path: Path) -> None:
 
         run_grace(runner, ["template", "mssm/asw1SW1"])
         run_grace(runner, ["grc"])
-        if grace.main.is_raw_command_available("gracefig"):
+        if grace.commands.gracefig.available:
             run_grace(runner, ["gracefig", "-p"])
         run_grace(runner, ["grcfort"])
         run_make(["all"])

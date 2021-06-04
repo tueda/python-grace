@@ -1,16 +1,13 @@
 """Main program."""
 
 import collections
-import os
-import re
 import shutil
-import subprocess
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional, Sequence
+from typing import Any, Dict, Optional
 
 import click
 
-from . import GRACE_ROOT, __version__
+from . import GRACE_ROOT, __version__, commands
 
 
 class OrderedGroup(click.Group):
@@ -75,35 +72,17 @@ _add_template_help()
 
 
 def _add_raw_commands() -> None:
-    raw_commands = (
-        "gracefig",
-        "grc",
-        "grccut",
-        "grcdraw",
-        "grcfort",
-        "grcmdl",
-        "grcmom",
-        "grcplot",
-        "grcprc",
-        "qcdcut",
-        "tread",
-    )
-
     args = click.Argument(["args"], required=False, nargs=-1)
     context_settings = {"ignore_unknown_options": True, "help_option_names": []}
 
-    def get_callback(name: str) -> Callable[..., None]:
-        # Return a closure that remembers the given name.
-        def callback(args: Sequence[str]) -> None:
-            invoke_raw_command(name, args)
-
-        return callback
-
-    for name in raw_commands:
+    for c in commands.raw_commands.values():
+        if not c.available:
+            continue
+        name = c.name
         cmd = click.Command(
             name,
             context_settings=context_settings,
-            callback=get_callback(name),
+            callback=c,
             params=[args],
             help=f"Run {name}.",
         )
@@ -111,52 +90,3 @@ def _add_raw_commands() -> None:
 
 
 _add_raw_commands()
-
-
-def is_raw_command_available(cmd: str) -> bool:
-    """Return `True` if the given raw command is actually available."""
-    return (GRACE_ROOT / "bin" / cmd).is_file()
-
-
-def invoke_raw_command(cmd: str, args: Sequence[str]) -> None:
-    """Invoke the given raw command."""
-    cmd_args = (str(GRACE_ROOT / "bin" / cmd),) + tuple(args)
-
-    # We need to give the environment variables GRCMODEL and KINEMPATH.
-
-    model_path = GRACE_ROOT / "lib" / "model"
-    kinem_path = GRACE_ROOT / "lib" / "dbkinem"
-
-    env = os.environ.copy()
-    env["GRCMODEL"] = f".:{model_path}"
-    env["KINEMPATH"] = f".:{kinem_path}"
-
-    subprocess.run(cmd_args, check=True, env=env)  # noqa: S603
-
-    if cmd == "grcfort":
-        patch_makefile()
-
-
-def patch_makefile() -> None:
-    """Patch Makefile."""
-    makefile = Path("Makefile")
-
-    if not makefile.exists():
-        return
-
-    lines = makefile.read_text().splitlines()
-
-    # We need to provide GRACEROOT.
-
-    if any(re.match(r"^\s*GRACEROOT\s*=", line) for line in lines):
-        return
-
-    for i, line in enumerate(lines):
-        # Insert a line just before GRACEDIR.
-        if re.match(r"^\s*GRACEDIR\s*=", line):
-            lines.insert(i, f"GRACEROOT = {str(GRACE_ROOT)}")
-            break
-    else:
-        raise RuntimeError("failed to patch Makefile")
-
-    makefile.write_text("\n".join(lines) + "\n")
