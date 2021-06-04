@@ -10,9 +10,7 @@ from typing import Any, Callable, Dict, Optional, Sequence
 
 import click
 
-from .version import __version__
-
-grace_root = Path(__file__).parent
+from . import GRACE_ROOT, __version__
 
 
 class OrderedGroup(click.Group):
@@ -56,7 +54,7 @@ def main(  # noqa: D103  # to suppress the help message
 @click.argument("name")
 def template(name: str) -> None:
     """Copy a template in.prc to the current directory."""
-    src = grace_root / "lib" / "templates" / name / "in.prc"
+    src = GRACE_ROOT / "lib" / "templates" / name / "in.prc"
     dest = Path("in.prc")
     shutil.copy(src, dest)
 
@@ -65,7 +63,7 @@ def _add_template_help() -> None:
     if not template.help:
         return
 
-    template_dir = grace_root / "lib" / "templates"
+    template_dir = GRACE_ROOT / "lib" / "templates"
     names = [str(f.relative_to(template_dir)) for f in template_dir.glob("*/*")]
 
     if names:
@@ -117,17 +115,17 @@ _add_raw_commands()
 
 def is_raw_command_available(cmd: str) -> bool:
     """Return `True` if the given raw command is actually available."""
-    return (grace_root / "bin" / cmd).is_file()
+    return (GRACE_ROOT / "bin" / cmd).is_file()
 
 
 def invoke_raw_command(cmd: str, args: Sequence[str]) -> None:
     """Invoke the given raw command."""
-    cmd_args = (str(grace_root / "bin" / cmd),) + tuple(args)
+    cmd_args = (str(GRACE_ROOT / "bin" / cmd),) + tuple(args)
 
     # We need to give the environment variables GRCMODEL and KINEMPATH.
 
-    model_path = grace_root / "lib" / "model"
-    kinem_path = grace_root / "lib" / "dbkinem"
+    model_path = GRACE_ROOT / "lib" / "model"
+    kinem_path = GRACE_ROOT / "lib" / "dbkinem"
 
     env = os.environ.copy()
     env["GRCMODEL"] = f".:{model_path}"
@@ -156,7 +154,7 @@ def patch_makefile() -> None:
     for i, line in enumerate(lines):
         # Insert a line just before GRACEDIR.
         if re.match(r"^\s*GRACEDIR\s*=", line):
-            lines.insert(i, f"GRACEROOT = {str(grace_root)}")
+            lines.insert(i, f"GRACEROOT = {str(GRACE_ROOT)}")
             break
     else:
         raise RuntimeError("failed to patch Makefile")
