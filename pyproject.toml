@@ -85,6 +85,21 @@ exclude_lines = [
 [tool.isort]
 profile = "black"
 
+[tool.mypy]
+pretty = true
+show_error_codes = true
+strict = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = [
+    "appdirs",
+    "importlib_metadata",
+    "patch",
+    "skbuild",
+]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 addopts = [
     "--cov-report=html",
