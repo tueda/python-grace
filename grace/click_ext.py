@@ -1,7 +1,7 @@
 """Click extensions."""
 
 from collections import OrderedDict
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Dict, List, Optional
 
 import click
 
@@ -26,6 +26,6 @@ class OrderedGroup(click.Group):
             commands = OrderedDict(commands)
         super(OrderedGroup, self).__init__(name=name, commands=commands, **attrs)
 
-    def list_commands(self, ctx: click.Context) -> Iterable[str]:
+    def list_commands(self, ctx: click.Context) -> List[str]:
         """Return a list of subcommands in the order they should appear."""
-        return self.commands.keys()
+        return list(self.commands.keys())
