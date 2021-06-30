@@ -23,8 +23,10 @@ include = [
     {path = "grace/patch/**/CMakeLists.txt", format = "sdist"},
 
     {path = "grace/bin/*", format = "wheel"},
+    {path = "grace/bin/debug/*", format = "wheel"},
     {path = "grace/lib/*.a", format = "wheel"},
     {path = "grace/lib/dbkinem/**/*.f", format = "wheel"},
+    {path = "grace/lib/debug/*.a", format = "wheel"},
     {path = "grace/lib/model/**/*.fin", format = "wheel"},
     {path = "grace/lib/model/**/*.mdl", format = "wheel"},
     {path = "grace/lib/templates/**/in.prc", format = "wheel"},
