@@ -1,5 +1,6 @@
 """GRACE commands."""
 
+from . import template as template  # noqa: F401  # reexport for mypy
 from .raw import RawCommand
 from .raw import raw_commands as raw_commands  # noqa: F401  # reexport for mypy
 

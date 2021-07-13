@@ -1,11 +1,8 @@
 """Main program."""
 
-import shutil
-from pathlib import Path
-
 import click
 
-from . import GRACE_ROOT, __version__, commands
+from . import __version__, commands
 from .click_ext import OrderedGroup
 
 
@@ -30,17 +27,14 @@ def main(  # noqa: D103  # to suppress the help message
 @click.argument("name")
 def template(name: str) -> None:
     """Copy a template in.prc to the current directory."""
-    src = GRACE_ROOT / "lib" / "templates" / name / "in.prc"
-    dest = Path("in.prc")
-    shutil.copy(src, dest)
+    commands.template.copy_template(name)
 
 
 def _add_template_help() -> None:
     if not template.help:
         return
 
-    template_dir = GRACE_ROOT / "lib" / "templates"
-    names = [str(f.relative_to(template_dir)) for f in template_dir.glob("*/*")]
+    names = commands.template.list_templates()
 
     if names:
         s = ", ".join(names)
