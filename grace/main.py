@@ -1,5 +1,7 @@
 """Main program."""
 
+from typing import List
+
 import click
 
 from . import __version__, commands
@@ -23,8 +25,15 @@ def main(  # noqa: D103  # to suppress the help message
             click.echo(main.get_help(ctx))
 
 
+def _complete_template_name(
+    ctx: click.Context, param: str, incomplete: str
+) -> List[str]:
+    names = commands.template.list_templates()
+    return [k for k in names if k.startswith(incomplete)]
+
+
 @main.command(no_args_is_help=True)
-@click.argument("name")
+@click.argument("name", shell_complete=_complete_template_name)
 def template(name: str) -> None:
     """Copy a template in.prc to the current directory."""
     commands.template.copy_template(name)
