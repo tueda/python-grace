@@ -20,9 +20,14 @@ class RawCommand:
         self._cmd = cmd
         raw_commands[cmd] = self
 
-    def __call__(self, args: Sequence[str]) -> None:
+    def __call__(self, args: Sequence[str], debug: bool) -> None:
         """Invoke the raw command."""
-        cmd_args = (str(GRACE_ROOT / "bin" / self._cmd),) + tuple(args)
+        if debug:
+            cmd_args = (str(GRACE_ROOT / "bin" / "debug" / self._cmd),)
+        else:
+            cmd_args = (str(GRACE_ROOT / "bin" / self._cmd),)
+
+        cmd_args += tuple(args)  # type: ignore[assignment]
 
         # We need to give the environment variables GRCMODEL and KINEMPATH.
 
@@ -46,6 +51,7 @@ class RawCommand:
     @property
     def available(self) -> bool:
         """Return `True` if the command is available."""
+        # This assumes that bin and bin/debug have the same executables.
         return is_raw_command_available(self._cmd)
 
 
@@ -74,6 +80,9 @@ def patch_makefile() -> None:
     makefile.write_text("\n".join(lines) + "\n")
 
 
-def is_raw_command_available(cmd: str) -> bool:
+def is_raw_command_available(cmd: str, debug: bool = False) -> bool:
     """Return `True` if the given raw command is actually available."""
-    return (GRACE_ROOT / "bin" / cmd).is_file()
+    if debug:
+        return (GRACE_ROOT / "bin" / "debug" / cmd).is_file()
+    else:
+        return (GRACE_ROOT / "bin" / cmd).is_file()

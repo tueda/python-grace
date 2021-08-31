@@ -1,6 +1,6 @@
 """Main program."""
 
-from typing import List
+from typing import List, Sequence
 
 import click
 
@@ -15,14 +15,18 @@ from .click_ext import OrderedGroup
 )
 @click.pass_context
 @click.option("--version", is_flag=True, help="Show the version.")
+@click.option("--debug/--no-debug", is_flag=True, help="Enable the debugging mode.")
 def main(  # noqa: D103  # to suppress the help message
-    ctx: click.Context, version: bool
+    ctx: click.Context, version: bool, debug: bool
 ) -> None:
     if ctx.invoked_subcommand is None:
         if version:
             click.echo(f"python-grace {__version__}")
         else:
             click.echo(main.get_help(ctx))
+    else:
+        ctx.ensure_object(dict)
+        ctx.obj["DEBUG"] = debug
 
 
 def _complete_template_name(
@@ -57,14 +61,22 @@ def _add_raw_commands() -> None:
     args = click.Argument(["args"], required=False, nargs=-1)
     context_settings = {"ignore_unknown_options": True, "help_option_names": []}
 
+    def make_callback(c: click.decorators.F) -> click.decorators.F:
+        @click.pass_context
+        def callback(ctx: click.Context, args: Sequence[str]) -> None:
+            c(args, ctx.obj["DEBUG"])
+
+        return callback  # type: ignore[return-value]
+
     for c in commands.raw_commands.values():
         if not c.available:
             continue
         name = c.name
+
         cmd = click.Command(
             name,
             context_settings=context_settings,
-            callback=c,
+            callback=make_callback(c),
             params=[args],
             help=f"Run {name}.",
         )
