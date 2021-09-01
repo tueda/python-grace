@@ -24,6 +24,9 @@ jobs:
           - python-version: 3.9
             cc: gcc-10
             fc: gfortran-10
+          - python-version: 3.10.0-rc.1
+            cc: gcc-10
+            fc: gfortran-10
           - python-version: 3.9
             cc: gcc-8
             fc: gfortran-8
