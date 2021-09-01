@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-grace"
-version = "0.0.5-alpha.0"
+version = "0.0.5"
 description = "An unofficial Python wrapper for the GRACE system."
 license = "MIT"
 authors = ["Takahiro Ueda <tueda@st.seikei.ac.jp>"]
