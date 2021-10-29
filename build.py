@@ -96,12 +96,11 @@ def build(setup_kwargs: Dict[str, Any]) -> None:
 
 def reset() -> None:
     """Reset the GRACE source tree."""
-    if GRACE_SRC_DIR.exists():
-        shutil.rmtree(GRACE_SRC_DIR)
     grace.utils.download_archive(
         GRACE_URL,
         GRACE_SHA256,
         GRACE_SRC_DIR,
+        clear=True,
         normalize_newlines=True,
         patch_dir=GRACE_PATCH_DIR,
     )

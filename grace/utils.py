@@ -94,10 +94,14 @@ def download_archive(
     sha256: str,
     extract_dir: Path,
     *,
+    clear: bool = False,
     normalize_newlines: bool = False,
     patch_dir: Optional[Path] = None,
 ) -> Path:
     """Download an archive file and extract it to the given directory."""
+    if clear and extract_dir.exists():
+        shutil.rmtree(extract_dir)
+
     url_name = Path(url).name.lower()
 
     archive_suffixes = [
