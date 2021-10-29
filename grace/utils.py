@@ -13,7 +13,7 @@ from typing import Optional, Sequence
 import appdirs
 import patch
 
-DEFAULT_IGNORE_PATTERNS = ("**/*.log", "**/*.o", "**/*.swp")
+DEFAULT_IGNORE_PATTERNS = ("**/__pycache__/*", "**/*.log", "**/*.o", "**/*.swp")
 
 _cache_path: Optional[Path] = None
 

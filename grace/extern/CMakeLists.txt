@@ -4,3 +4,4 @@ project(python-grace C Fortran)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 add_subdirectory(grace)
+add_subdirectory(grcext)

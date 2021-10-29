@@ -14,10 +14,20 @@ PREFIX_DIR = Path(".") / "grace"
 SRC_DIR = PREFIX_DIR / "extern"
 PATCH_DIR = PREFIX_DIR / "patch"
 
+# GRACE v2.2.1
 GRACE_URL = "https://minami-home.kek.jp/grace221/grace.221.2006.0116.tgz"
 GRACE_SHA256 = "a4971eddf65126a796c788661cdfa8c7cf738d91200d09a36999cc92baa943cf"
 GRACE_SRC_DIR = SRC_DIR / "grace"
 GRACE_PATCH_DIR = PATCH_DIR / "grace"
+
+# grcext.py (2021-03-03)
+GRCEXT_URL = (
+    "https://gist.github.com/tueda/33861cb5469c7c431b1b99b943a725e7/archive/"
+    "25d452a83f0c9d14543ce3158fde26518b00408f.tar.gz"
+)
+GRCEXT_SHA256 = "15ffbeeaddc4b5a8d371582772ad65d2424866c500cb1e0613d57fdf5e9bb1f2"
+GRCEXT_SRC_DIR = SRC_DIR / "grcext"
+GRCEXT_PATCH_DIR = PATCH_DIR / "grcext"
 
 
 def build(setup_kwargs: Dict[str, Any]) -> None:
@@ -27,8 +37,8 @@ def build(setup_kwargs: Dict[str, Any]) -> None:
     if not cmake_lists.is_file():
         raise RuntimeError(f"{cmake_lists.absolute()} not found")
 
-    # Prepare the Grace source files.
-    if not GRACE_SRC_DIR.exists():
+    # Prepare the source tree.
+    if any(not p.exists() for p in (GRACE_SRC_DIR, GRCEXT_SRC_DIR)):
         reset()
 
     # Back up the default parameters.
@@ -95,7 +105,7 @@ def build(setup_kwargs: Dict[str, Any]) -> None:
 
 
 def reset() -> None:
-    """Reset the GRACE source tree."""
+    """Reset the source tree."""
     grace.utils.download_archive(
         GRACE_URL,
         GRACE_SHA256,
@@ -103,6 +113,14 @@ def reset() -> None:
         clear=True,
         normalize_newlines=True,
         patch_dir=GRACE_PATCH_DIR,
+    )
+
+    grace.utils.download_archive(
+        GRCEXT_URL,
+        GRCEXT_SHA256,
+        GRCEXT_SRC_DIR,
+        clear=True,
+        patch_dir=GRCEXT_PATCH_DIR,
     )
 
 
@@ -116,6 +134,11 @@ def diff() -> None:
         grace.utils.make_patch(
             temp_path, GRACE_SRC_DIR, GRACE_PATCH_DIR, normalize_newlines=True
         )
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        temp_path = Path(tmp_dir)
+        grace.utils.download_archive(GRCEXT_URL, GRCEXT_SHA256, temp_path)
+        grace.utils.make_patch(temp_path, GRCEXT_SRC_DIR, GRCEXT_PATCH_DIR)
 
 
 if __name__ == "__main__":
