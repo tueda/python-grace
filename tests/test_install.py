@@ -103,6 +103,7 @@ def test_sm_eewwa(tmp_path: Path) -> None:
         run_make(["all"])
         gauge_result = extract_gauge_result(run_executable("gauge", []))
         integ_result = extract_integ_result(run_executable("integ", []))
+        run_grace(runner, ["grcext"])
         run_executable("spring", [])
 
         gauge_answer = 0.210130857
@@ -132,6 +133,7 @@ def test_mssm_asw1sw1(tmp_path: Path) -> None:
         run_make(["all"])
         gauge_result = extract_gauge_result(run_executable("gauge", []))
         integ_result = extract_integ_result(run_executable("integ", []))
+        run_grace(runner, ["grcext"])
         run_executable("spring", [])
 
         gauge_answer = 0.00435036634
