@@ -3,6 +3,7 @@
 import os
 import re
 import subprocess
+import sys
 from collections import OrderedDict
 from pathlib import Path
 from typing import Sequence
@@ -15,19 +16,23 @@ raw_commands: "OrderedDict[str, RawCommand]" = OrderedDict()
 class RawCommand:
     """Raw command object."""
 
-    def __init__(self, cmd: str) -> None:
+    def __init__(self, cmd: str, python: bool = False) -> None:
         """Construct a raw command object."""
         self._cmd = cmd
+        self._python = python
         raw_commands[cmd] = self
 
     def __call__(self, args: Sequence[str], debug: bool) -> None:
         """Invoke the raw command."""
         if debug:
-            cmd_args = (str(GRACE_ROOT / "bin" / "debug" / self._cmd),)
+            cmd_args = [str(GRACE_ROOT / "bin" / "debug" / self._cmd)]
         else:
-            cmd_args = (str(GRACE_ROOT / "bin" / self._cmd),)
+            cmd_args = [str(GRACE_ROOT / "bin" / self._cmd)]
 
-        cmd_args += tuple(args)  # type: ignore[assignment]
+        if self._python:
+            cmd_args = [sys.executable] + cmd_args
+
+        cmd_args += list(args)
 
         # We need to give the environment variables GRCMODEL and KINEMPATH.
 
