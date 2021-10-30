@@ -129,6 +129,10 @@ lint = "pre-commit run --all-files"
 test = "pytest"
 pre_test = "task build"
 
+# Run all tests.
+testall = "pytest -m ''"
+pre_testall = "task build"
+
 # Build.
 build = "python build.py"
 
