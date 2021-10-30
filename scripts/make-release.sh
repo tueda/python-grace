@@ -19,7 +19,14 @@ fi
 
 # Bump the version.
 poetry version $next_version
-git commit -a -m "chore: bump version to $(poetry version -s)"
-git tag $(poetry version -s)
+release_version=$(poetry version -s)
+git commit -a -m "chore(release): bump version to $release_version"
+git tag $release_version
 poetry version prepatch
-git commit -a -m "chore: bump version to $(poetry version -s)"
+dev_version=$(poetry version -s)
+git commit -a -m "chore: bump version to $dev_version"
+
+echo "A release tag $release_version was successfully created."
+echo "The development version is now $dev_version"
+echo "To push it to the origin:"
+echo "  git push origin $release_version"
