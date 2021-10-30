@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Sequence
 
 from .. import GRACE_ROOT
+from ..utils import GraceException
 
 raw_commands: "OrderedDict[str, RawCommand]" = OrderedDict()
 
@@ -43,7 +44,12 @@ class RawCommand:
         env["GRCMODEL"] = f".:{model_path}"
         env["KINEMPATH"] = f".:{kinem_path}"
 
-        subprocess.run(cmd_args, check=True, env=env)  # noqa: S603
+        try:
+            subprocess.run(cmd_args, check=True, env=env)  # noqa: S603
+        except subprocess.CalledProcessError as e:
+            raise GraceException(
+                f"command {e.cmd} returned non-zero exit status {e.returncode}"
+            )
 
         if self._cmd == "grcfort":
             patch_makefile()

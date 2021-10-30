@@ -15,6 +15,28 @@ import patch
 
 DEFAULT_IGNORE_PATTERNS = ("**/__pycache__/*", "**/*.log", "**/*.o", "**/*.swp")
 
+
+try:
+    # NOTE: when loaded from build.py, click may be not available.
+
+    import click
+
+    class GraceException(click.ClickException):
+        """Exceptions that occur in Grace."""
+
+        # NOTE: exceptions by ``raise GraceException(str)`` are automatically handled
+        # in the Click framework.
+        pass
+
+
+except ModuleNotFoundError:
+
+    class GraceException(Exception):  # type: ignore[no-redef]
+        """Exceptions that occur in Grace."""
+
+        pass
+
+
 _cache_path: Optional[Path] = None
 
 
