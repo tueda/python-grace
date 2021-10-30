@@ -20,12 +20,12 @@ GRACE_SHA256 = "a4971eddf65126a796c788661cdfa8c7cf738d91200d09a36999cc92baa943cf
 GRACE_SRC_DIR = SRC_DIR / "grace"
 GRACE_PATCH_DIR = PATCH_DIR / "grace"
 
-# grcext.py (2021-03-03)
+# grcext.py (2021-10-30)
 GRCEXT_URL = (
     "https://gist.github.com/tueda/33861cb5469c7c431b1b99b943a725e7/archive/"
-    "25d452a83f0c9d14543ce3158fde26518b00408f.tar.gz"
+    "71a1dd22af90a0208bc19b94e61d55ccb29af57a.tar.gz"
 )
-GRCEXT_SHA256 = "15ffbeeaddc4b5a8d371582772ad65d2424866c500cb1e0613d57fdf5e9bb1f2"
+GRCEXT_SHA256 = "aee80b53ed8bcc2bac2516849424078a6196130c03b87762f692fda396cc4a43"
 GRCEXT_SRC_DIR = SRC_DIR / "grcext"
 GRCEXT_PATCH_DIR = PATCH_DIR / "grcext"
 
