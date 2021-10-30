@@ -127,16 +127,16 @@ lint = "pre-commit run --all-files"
 
 # Run tests.
 test = "pytest"
-pre_test = "task grace-build"
+pre_test = "task build"
 
-# Build GRACE.
-grace-build = "python build.py"
+# Build.
+build = "python build.py"
 
-# Create a patch set for GRACE.
-grace-diff = "python -c 'import build; build.diff()'"
+# Create a patch set.
+makepatch = "python -c 'import build; build.diff()'"
 
-# Reset the GRACE source code tree (original + patch).
-grace-reset = "python -c 'import build; build.reset()'"
+# Reset the source tree (original + patch).
+reset = "python -c 'import build; build.reset()'"
 
-# Rebuild GRACE.
-grace-rebuild = "task grace-reset && task grace-build"
+# Reset and rebuild.
+rebuild = "task reset && task build"
