@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="0.0.6"></a>
+## [0.0.6] (2021-10-30)
+### Added
+- New raw command `grcext`. For example, `grace grcext` reads `bases.result` and prints computer-readable histogram data to the standard output. See also the help message shown by `grace grcext --help`.
+  ([#5](https://github.com/tueda/python-grace/issues/5))
+- Handling non-zero exit status codes returned from the raw commands. This makes the error message more understandable.
+  ([868cb4b](https://github.com/tueda/python-grace/commit/868cb4b01a18c8839bebad45f5ed212d89ade0e8))
+
 
 <a name="0.0.5"></a>
 ## [0.0.5] (2021-09-01)
@@ -52,7 +60,7 @@
 ## 0.0.1 (2021-02-20)
 - First release. This version provides GRACE 2.2.1 as it is.
 
-
+[0.0.6]: https://github.com/tueda/python-grace/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/tueda/python-grace/compare/0.0.4...0.0.5
 [0.0.4]: https://github.com/tueda/python-grace/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/tueda/python-grace/compare/0.0.2...0.0.3
