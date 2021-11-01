@@ -12,28 +12,39 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - python-version: 3.6
+          - os: ubuntu-20.04
+            python-version: 3.6
             cc: gcc-10
             fc: gfortran-10
-          - python-version: 3.7
+          - os: ubuntu-20.04
+            python-version: 3.7
             cc: gcc-10
             fc: gfortran-10
-          - python-version: 3.8
+          - os: ubuntu-20.04
+            python-version: 3.8
             cc: gcc-10
             fc: gfortran-10
-          - python-version: 3.9
+          - os: ubuntu-20.04
+            python-version: 3.9
             cc: gcc-10
             fc: gfortran-10
-          - python-version: "3.10"
+          - os: ubuntu-20.04
+            python-version: "3.10"
             cc: gcc-10
             fc: gfortran-10
-          - python-version: 3.9
+          - os: ubuntu-20.04
+            python-version: 3.9
             cc: gcc-8
             fc: gfortran-8
-          - python-version: 3.9
+          - os: ubuntu-20.04
+            python-version: 3.9
             cc: gcc-9
             fc: gfortran-9
-    runs-on: ubuntu-20.04
+          - os: macos-11
+            python-version: 3.9
+            cc: gcc-11
+            fc: gfortran-11
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
@@ -60,12 +71,16 @@ jobs:
           restore-keys: |
             python-grace-
 
-      - name: Install dependencies
+      - name: Install dependencies (apt)
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update -qq
           [ ${{ matrix.cc }} = gcc-8 ] && sudo apt-get install -y -qq g++-8
           [ ${{ matrix.fc }} = gfortran-8 ] && sudo apt-get install -y -qq gfortran-8
           sudo apt-get install -y -qq libmotif-dev
+
+      - name: Install dependencies (pip)
+        run: |
           pip install --upgrade pip
           pip install tox tox-gh-actions
 
