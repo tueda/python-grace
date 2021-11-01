@@ -1,5 +1,12 @@
 # Changelog
 
+<a name="0.0.7"></a>
+## [0.0.7] (2021-11-01)
+### Fixed
+- Bug in `build.py` that caused a build error on macOS.
+  ([60df64e](https://github.com/tueda/python-grace/commit/60df64e419415e61ddd86d9611b0d261727aad78))
+
+
 <a name="0.0.6"></a>
 ## [0.0.6] (2021-10-30)
 ### Added
@@ -60,6 +67,8 @@
 ## 0.0.1 (2021-02-20)
 - First release. This version provides GRACE 2.2.1 as it is.
 
+
+[0.0.7]: https://github.com/tueda/python-grace/compare/0.0.6...0.0.7
 [0.0.6]: https://github.com/tueda/python-grace/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/tueda/python-grace/compare/0.0.4...0.0.5
 [0.0.4]: https://github.com/tueda/python-grace/compare/0.0.3...0.0.4
