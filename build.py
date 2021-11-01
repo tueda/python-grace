@@ -41,7 +41,7 @@ def build(setup_kwargs: Dict[str, Any]) -> None:
     if any(not p.exists() for p in (GRACE_SRC_DIR, GRCEXT_SRC_DIR)):
         reset()
 
-    # Back up the default parameters.
+    # Back up the default parameters, just in case.
     old_sys_argv = sys.argv
     old_skbuild_plat_name = skbuild.constants._SKBUILD_PLAT_NAME
 
@@ -50,7 +50,9 @@ def build(setup_kwargs: Dict[str, Any]) -> None:
         sys.argv = old_sys_argv.copy()
         sys.argv.append("--build-type")
         sys.argv.append("Release")
-        skbuild.constants._SKBUILD_PLAT_NAME = "Release" / Path(old_skbuild_plat_name)
+        skbuild.constants._SKBUILD_PLAT_NAME = str(
+            "Release" / Path(old_skbuild_plat_name)
+        )
 
         skbuild.setup(
             **setup_kwargs,
@@ -65,7 +67,9 @@ def build(setup_kwargs: Dict[str, Any]) -> None:
         sys.argv = old_sys_argv.copy()
         sys.argv.append("--build-type")
         sys.argv.append("Debug")
-        skbuild.constants._SKBUILD_PLAT_NAME = "Debug" / Path(old_skbuild_plat_name)
+        skbuild.constants._SKBUILD_PLAT_NAME = str(
+            "Debug" / Path(old_skbuild_plat_name)
+        )
 
         skbuild.setup(
             **setup_kwargs,
