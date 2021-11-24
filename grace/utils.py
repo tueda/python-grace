@@ -40,6 +40,14 @@ except ModuleNotFoundError:
 _cache_path: Optional[Path] = None
 
 
+def relative_path(path: Path) -> Path:
+    """Translate the given path into the relative path, if possible."""
+    try:
+        return path.relative_to(Path.cwd())
+    except ValueError:
+        return path
+
+
 def get_cache_path() -> Path:
     """Return the cache path."""
     global _cache_path

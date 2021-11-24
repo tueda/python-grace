@@ -1,11 +1,14 @@
 """Main program."""
 
+import logging
 from typing import List, Sequence
 
 import click
 
 from . import __version__, commands
 from .click_ext import OrderedGroup
+
+logger = logging.getLogger("grace")
 
 
 @click.group(
@@ -15,10 +18,12 @@ from .click_ext import OrderedGroup
 )
 @click.pass_context
 @click.option("--version", is_flag=True, help="Show the version.")
+@click.option("-v", "--verbose", count=True, help="More verbose messages.")
 @click.option("--debug/--no-debug", is_flag=True, help="Enable the debugging mode.")
 def main(  # noqa: D103  # to suppress the help message
-    ctx: click.Context, version: bool, debug: bool
+    ctx: click.Context, version: bool, verbose: int, debug: bool
 ) -> None:
+    _setup_logger(logger, verbose)
     if ctx.invoked_subcommand is None:
         if version:
             click.echo(f"python-grace {__version__}")
@@ -27,6 +32,19 @@ def main(  # noqa: D103  # to suppress the help message
     else:
         ctx.ensure_object(dict)
         ctx.obj["DEBUG"] = debug
+
+
+def _setup_logger(logger: logging.Logger, verbose_level: int) -> None:
+    if verbose_level >= 2:
+        logger.setLevel(logging.DEBUG)
+    elif verbose_level == 1:
+        logger.setLevel(logging.INFO)
+    else:
+        logger.setLevel(logging.WARNING)
+    console_handler = logging.StreamHandler()
+    formatter = logging.Formatter("{name} [{levelname:^8}] {message}", style="{")
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
 
 
 def _complete_template_name(

@@ -1,5 +1,6 @@
 """Raw commands."""
 
+import logging
 import os
 import re
 import subprocess
@@ -10,6 +11,8 @@ from typing import Sequence
 
 from .. import GRACE_ROOT
 from ..utils import GraceException
+
+logger = logging.getLogger("grace")
 
 raw_commands: "OrderedDict[str, RawCommand]" = OrderedDict()
 
@@ -44,12 +47,17 @@ class RawCommand:
         env["GRCMODEL"] = f".:{model_path}"
         env["KINEMPATH"] = f".:{kinem_path}"
 
+        logger.info(
+            f"Running subprocess: {' '.join(cmd_args)} "
+            f"(GRCMODEL={env['GRCMODEL']}, KINEMPATH={env['KINEMPATH']}) ..."
+        )
         try:
             subprocess.run(cmd_args, check=True, env=env)  # noqa: S603
         except subprocess.CalledProcessError as e:
             raise GraceException(
                 f"command {e.cmd} returned non-zero exit status {e.returncode}"
             )
+        logger.info(f"Completed subprocess: {' '.join(cmd_args)}")
 
         if self._cmd == "grcfort":
             patch_makefile()
@@ -68,9 +76,12 @@ class RawCommand:
 
 def patch_makefile() -> None:
     """Patch Makefile."""
+    logger.info("Patching Makefile for GRACEROOT ...")
+
     makefile = Path("Makefile")
 
     if not makefile.exists():
+        logger.info("Makefile not found")
         return
 
     lines = makefile.read_text().splitlines()
@@ -89,6 +100,8 @@ def patch_makefile() -> None:
         raise RuntimeError("failed to patch Makefile")
 
     makefile.write_text("\n".join(lines) + "\n")
+
+    logger.info("Completed")
 
 
 def is_raw_command_available(cmd: str, debug: bool = False) -> bool:
