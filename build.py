@@ -146,4 +146,9 @@ def diff() -> None:
 
 
 if __name__ == "__main__":
-    build({})
+    if len(sys.argv) == 2 and sys.argv[1] == "diff":
+        diff()
+    elif len(sys.argv) == 2 and sys.argv[1] == "reset":
+        reset()
+    else:
+        build({})

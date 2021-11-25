@@ -118,29 +118,34 @@ markers = [
     "test_install"
 ]
 
-[tool.taskipy.tasks]
-# Set up a development environment.
-setup = "pre-commit install && pre-commit install --hook-type commit-msg"
+[tool.taskipy.tasks.prepare]
+cmd = "pre-commit install && pre-commit install --hook-type commit-msg"
+help = "set up a development environment"
 
-# Run linters (+ fix).
-lint = "pre-commit run --all-files"
+[tool.taskipy.tasks.lint]
+cmd = "pre-commit run --all-files"
+help = "run linters (+ fix)"
 
-# Run tests.
-test = "pytest"
-pre_test = "task build"
+[tool.taskipy.tasks.build]
+cmd = "python build.py"
+help = "build native libraries"
 
-# Run all tests.
-testall = "pytest -m ''"
-pre_testall = "task build"
+[tool.taskipy.tasks.test]
+cmd = "task build && pytest"
+help = "run tests"
 
-# Build.
-build = "python build.py"
+[tool.taskipy.tasks.testall]
+cmd = "task build && pytest -m ''"
+help = "run all tests"
 
-# Create a patch set.
-makepatch = "python -c 'import build; build.diff()'"
+[tool.taskipy.tasks.makepatch]
+cmd = "python build.py diff"
+help = "create a patch set"
 
-# Reset the source tree (original + patch).
-reset = "python -c 'import build; build.reset()'"
+[tool.taskipy.tasks.reset]
+cmd = "python build.py reset"
+help = "reset the source tree (original + patch)"
 
-# Reset and rebuild.
-rebuild = "task reset && task build"
+[tool.taskipy.tasks.rebuild]
+cmd = "task reset && task build"
+help = "reset and rebuild"
