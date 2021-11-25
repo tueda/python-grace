@@ -20,6 +20,7 @@ Requirements
 - Make utility
 - X Window system (optional, for `gracefig` and `grcdraw`)
 - Motif Toolkit or its clone (optional, for `gracefig`)
+- `ps2pdf` in Ghostscript (optional, to generate PDF files with `gracefig`)
 
 
 Installation

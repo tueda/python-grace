@@ -3,6 +3,7 @@
 import logging
 import os
 import re
+import shutil
 import subprocess
 import sys
 from collections import OrderedDict
@@ -61,6 +62,10 @@ class RawCommand:
 
         if self._cmd == "grcfort":
             patch_makefile()
+        elif self._cmd == "gracefig":
+            if any(a.startswith("-") for a in args):
+                # NOTE: any option makes gracefig generate grcfig.eps.
+                run_ps2pdf()
 
     @property
     def name(self) -> str:
@@ -102,6 +107,32 @@ def patch_makefile() -> None:
     makefile.write_text("\n".join(lines) + "\n")
 
     logger.info("Completed")
+
+
+def run_ps2pdf() -> None:
+    """Run ps2pdf for grcfig.eps -> grcfig.pdf."""
+    src_file = Path("grcfig.eps")
+
+    if not src_file.exists():
+        # gracefig should have created grcfig.eps.
+        logger.warning("grcfig.eps not found")
+        return
+
+    ps2pdf = shutil.which("ps2pdf")
+
+    if not ps2pdf:
+        logger.info("ps2pdf not found")
+        return
+
+    cmd_args = (ps2pdf, src_file.name)
+
+    logger.info(f"Running subprocess: {' '.join(cmd_args)} ...")
+    try:
+        subprocess.run(cmd_args, check=True)  # noqa: S603
+    except subprocess.CalledProcessError as e:
+        logger.warning(f"command {e.cmd} returned non-zero exit status {e.returncode}")
+        return
+    logger.info(f"Completed subprocess: {' '.join(cmd_args)}")
 
 
 def is_raw_command_available(cmd: str, debug: bool = False) -> bool:
