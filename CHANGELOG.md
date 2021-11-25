@@ -1,5 +1,14 @@
 # Changelog
 
+<a name="0.0.8"></a>
+## [0.0.8] (2021-11-25)
+### Added
+- `grace --verbose` option to output verbose messages. `-v` for short. `-vv` is reserved for more verbose messages in debugging.
+  ([f439383](https://github.com/tueda/python-grace/commit/f439383a2362176326795f4014f5125a68d06e83))
+- Run `ps2pdf` (if available), when `gracefig` generates an EPS file, to produce also a PDF file.
+  ([02d4b3b](https://github.com/tueda/python-grace/commit/02d4b3b54956fdc519689bb2dcb7f26b7d04b52f))
+
+
 <a name="0.0.7"></a>
 ## [0.0.7] (2021-11-01)
 ### Fixed
@@ -68,6 +77,7 @@
 - First release. This version provides GRACE 2.2.1 as it is.
 
 
+[0.0.8]: https://github.com/tueda/python-grace/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/tueda/python-grace/compare/0.0.6...0.0.7
 [0.0.6]: https://github.com/tueda/python-grace/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/tueda/python-grace/compare/0.0.4...0.0.5
