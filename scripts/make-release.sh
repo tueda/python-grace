@@ -31,10 +31,10 @@ trap 'errexit' ERR
 set -o errtrace
 
 # pre_version_message <current_version_number> <version_number> <dev_version_number>:
-# a hook function to print some mesasge before bumping the version number.
+# a hook function to print some message before bumping the version number.
 function pre_version_message() {
   echo 'Please make sure that CHANGELOG is up-to-date.'
-  echo 'You can use the output of the folloiwing command:'
+  echo 'You can use the output of the following command:'
   echo
   echo "  git-chglog --next-tag $2"
   echo
