@@ -1,27 +1,31 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
+    -   id: check-added-large-files
     -   id: check-case-conflict
     -   id: check-merge-conflict
     -   id: check-symlinks
+    -   id: check-toml
     -   id: check-yaml
+    -   id: debug-statements
     -   id: end-of-file-fixer
+    -   id: mixed-line-ending
     -   id: trailing-whitespace
 -   repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.3.54
+    rev: 2.4.0
     hooks:
     -   id: editorconfig-checker
         exclude: CMakeLists.txt|\.cmake
 -   repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.3.54
+    rev: 2.4.0
     hooks:
     -   id: editorconfig-checker
         name: editorconfig-checker (CMake)
         files: CMakeLists.txt|\.cmake
         args: [-disable-indentation]
 -   repo: https://github.com/psf/black
-    rev: 21.11b1
+    rev: 22.1.0
     hooks:
     -   id: black
 -   repo: https://github.com/timothycrosley/isort
@@ -33,21 +37,21 @@ repos:
     hooks:
     -   id: flake8
         additional_dependencies:
-        -   flake8-bandit==2.1.2
-        -   flake8-bugbear==21.9.2
+        -   flake8-bandit==3.0.0
+        -   flake8-bugbear==22.1.11
         -   flake8-builtins==1.5.3
-        -   flake8-comprehensions==3.7.0
+        -   flake8-comprehensions==3.8.0
         -   flake8-docstrings==1.6.0
-        -   flake8-pytest-style==1.5.1
+        -   flake8-pytest-style==1.6.0
         -   pep8-naming==0.12.1
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.910-1
+    rev: v0.940
     hooks:
     -   id: mypy
         args: []
         additional_dependencies:
-        -   click==8.0.3
-        -   pytest==6.2.5
+        -   click==8.0.4
+        -   pytest==7.0.1
 -   repo: https://github.com/cheshirekow/cmake-format-precommit
     rev: v0.6.13
     hooks:
@@ -56,6 +60,6 @@ repos:
     -   id: cmake-lint
         additional_dependencies: [pyyaml==6.0]
 -   repo: https://github.com/jorisroovers/gitlint
-    rev: v0.16.0
+    rev: v0.17.0
     hooks:
     -   id: gitlint

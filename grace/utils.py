@@ -28,7 +28,6 @@ try:
         # in the Click framework.
         pass
 
-
 except ModuleNotFoundError:
 
     class GraceException(Exception):  # type: ignore[no-redef]

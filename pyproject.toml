@@ -49,25 +49,25 @@ grace = "grace.main:main"
 python = "^3.6.1"
 
 appdirs = "^1.4.4"
-click = "^8.0.3"
+click = "^8.0.4"
 patch = "^1.16"
 
-importlib-metadata = {version = "^4.8.2", python = "<3.8"}
+importlib-metadata = {version = "^4.8.3", python = "<3.8"}  # 4.9.0 requires python>=3.7
 
 [tool.poetry.dev-dependencies]
-cmake = "^3.22.0"
+cmake = "^3.22.3"
 ninja = "^1.10.2.3"
-pre-commit = "^2.15.0"
-pytest = "^6.2.5"
+pre-commit = "^2.17.0"
+pytest = "^7.0.1"  # 7.1.0 requires python>=3.7
 pytest-cov = "^3.0.0"
-scikit-build = "^0.12.0"
-taskipy = "^1.9.0"
+scikit-build = "^0.13.1"
+taskipy = "^1.10.1"
 
 [build-system]
 requires = [
-    "poetry-core>=1.0.7",
-    "scikit-build>=0.12.0",
-    "cmake>=3.22.0",
+    "poetry-core>=1.0.8",
+    "scikit-build>=0.13.1",
+    "cmake>=3.22.3",
     "ninja>=1.10.2.3",
 
     "appdirs",
