@@ -29,6 +29,12 @@ GRCEXT_SHA256 = "aee80b53ed8bcc2bac2516849424078a6196130c03b87762f692fda396cc4a4
 GRCEXT_SRC_DIR = SRC_DIR / "grcext"
 GRCEXT_PATCH_DIR = PATCH_DIR / "grcext"
 
+# paramcard 0.2.1
+PARAMCARD_URL = "https://github.com/tueda/paramcard/archive/refs/tags/v0.2.1.tar.gz"
+PARAMCARD_SHA256 = "4205914e7faf629c191a858a63176ea8aa557e1e265da2b5c982beae60bd7ce3"
+PARAMCARD_SRC_DIR = SRC_DIR / "paramcard"
+PARAMCARD_PATCH_DIR = PATCH_DIR / "paramcard"
+
 
 def build(setup_kwargs: Dict[str, Any]) -> None:
     """Build the extensions."""
@@ -125,6 +131,14 @@ def reset() -> None:
         GRCEXT_SRC_DIR,
         clear=True,
         patch_dir=GRCEXT_PATCH_DIR,
+    )
+
+    grace.utils.download_archive(
+        PARAMCARD_URL,
+        PARAMCARD_SHA256,
+        PARAMCARD_SRC_DIR,
+        clear=True,
+        patch_dir=PARAMCARD_PATCH_DIR,
     )
 
 
