@@ -49,26 +49,26 @@ grace = "grace.main:main"
 python = "^3.6.1"
 
 appdirs = "^1.4.4"
-click = "^8.0.3"
+click = "^8.0.4"  # frozen for python 3.6
 patch = "^1.16"
 
 importlib-metadata = {version = "^4.8.2", python = "<3.8"}
 
 [tool.poetry.dev-dependencies]
-cmake = "^3.22.0"
-ninja = "^1.10.2.3"
-pre-commit = "^2.15.0"
-pytest = "^6.2.5"
-pytest-cov = "^3.0.0"
-scikit-build = "^0.12.0"
-taskipy = "^1.9.0"
+cmake = "^3.25.2"
+ninja = "^1.11.1"
+pre-commit = "^2.17.0"  # frozen for python 3.6
+pytest = "^7.0.1"  # frozen for python 3.6
+pytest-cov = "^4.0.0"
+scikit-build = "^0.16.6"
+taskipy = "^1.10.3"
 
 [build-system]
 requires = [
-    "poetry-core>=1.0.7",
-    "scikit-build>=0.12.0",
-    "cmake>=3.22.0",
-    "ninja>=1.10.2.3",
+    "poetry-core>=1.0.8",
+    "scikit-build>=0.16.6",
+    "cmake>=3.25.2",
+    "ninja>=1.11.1",
 
     "appdirs",
     "patch",
@@ -82,6 +82,16 @@ exclude_lines = [
     "pragma: no cover",
     "raise AssertionError()",
     "return NotImplemented",
+]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = [
+    "E203",  # for black
+    "S404",  # import_subprocess
+]
+per-file-ignores = [
+    "tests/test_*.py:D100,D103,S101,S603",
 ]
 
 [tool.isort]
