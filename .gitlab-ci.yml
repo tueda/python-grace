@@ -7,7 +7,7 @@ cache:
     - .cache
 
 lint:
-  image: python:3.9
+  image: python:3.10
   before_script:
     - pip install gitlint pre-commit
   script:
@@ -23,6 +23,7 @@ test:
         - python:3.8-buster
         - python:3.9-buster
         - python:3.10-buster
+        - python:3.11-buster
   image: $IMAGE
   before_script:
     - apt-get update -qq

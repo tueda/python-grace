@@ -3,6 +3,7 @@ name: Test
 on:
   push:
   pull_request:
+  workflow_dispatch:
   schedule:
     - cron: 0 0 1 * * # monthly
 
@@ -12,59 +13,72 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-20.04
-            python-version: 3.6
-            cc: gcc-10
-            fc: gfortran-10
-          - os: ubuntu-20.04
-            python-version: 3.7
-            cc: gcc-10
-            fc: gfortran-10
+          # baseline:
+          # ubuntu-20.04 + python3.8 + gcc-9
+          # ubuntu-22.04 + python3.10 + gcc-11
           - os: ubuntu-20.04
             python-version: 3.8
-            cc: gcc-10
-            fc: gfortran-10
-          - os: ubuntu-20.04
-            python-version: 3.9
-            cc: gcc-10
-            fc: gfortran-10
-          - os: ubuntu-20.04
+            cc: gcc-9
+            fc: gfortran-9
+
+          - os: ubuntu-22.04
             python-version: "3.10"
-            cc: gcc-10
-            fc: gfortran-10
+            cc: gcc-11
+            fc: gfortran-11
+
+          # other python versions
           - os: ubuntu-20.04
-            python-version: 3.9
-            cc: gcc-8
-            fc: gfortran-8
+            python-version: 3.6
+            cc: gcc-9
+            fc: gfortran-9
+
+          - os: ubuntu-20.04
+            python-version: 3.7
+            cc: gcc-9
+            fc: gfortran-9
+
           - os: ubuntu-20.04
             python-version: 3.9
             cc: gcc-9
             fc: gfortran-9
-          - os: macos-11
-            python-version: 3.9
+
+          - os: ubuntu-22.04
+            python-version: "3.11"
             cc: gcc-11
             fc: gfortran-11
+
+          # other gcc versions
+          - os: ubuntu-20.04
+            python-version: 3.8
+            cc: gcc-8
+            fc: gfortran-8
+
+          - os: ubuntu-20.04
+            python-version: 3.8
+            cc: gcc-10
+            fc: gfortran-10
+
+          - os: ubuntu-22.04
+            python-version: "3.10"
+            cc: gcc-12
+            fc: gfortran-12
+
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Cache for pip
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-            ${{ runner.os }}-pip-
+          cache: "pip"
+          cache-dependency-path: |
+            pyproject.toml
+            tox.ini
 
       - name: Cache for GRACE
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/python-grace
           key: python-grace-221.2006.0116
@@ -73,11 +87,12 @@ jobs:
 
       - name: Install dependencies (apt)
         if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update -qq
-          [ ${{ matrix.cc }} = gcc-8 ] && sudo apt-get install -y -qq g++-8
-          [ ${{ matrix.fc }} = gfortran-8 ] && sudo apt-get install -y -qq gfortran-8
-          sudo apt-get install -y -qq libmotif-dev
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: |
+            ${{ matrix.cc == 'gcc-8' && 'g++-8' || '' }}
+            ${{ matrix.fc == 'gfortran-8' && 'gfortran-8' || '' }}
+            libmotif-dev
 
       - name: Install dependencies (pip)
         run: |
