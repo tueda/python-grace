@@ -63,6 +63,11 @@ jobs:
             cc: gcc-12
             fc: gfortran-12
 
+          - os: ubuntu-22.04
+            python-version: "3.10"
+            cc: gcc-13
+            fc: gfortran-13
+
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout the repository
@@ -92,6 +97,8 @@ jobs:
           packages: |
             ${{ matrix.cc == 'gcc-8' && 'g++-8' || '' }}
             ${{ matrix.fc == 'gfortran-8' && 'gfortran-8' || '' }}
+            ${{ matrix.cc == 'gcc-13' && 'g++-13' || '' }}
+            ${{ matrix.fc == 'gfortran-13' && 'gfortran-13' || '' }}
             libmotif-dev
 
       - name: Install dependencies (pip)
