@@ -1,5 +1,12 @@
 # Changelog
 
+<a name="0.0.9"></a>
+## [0.0.9] (2023-08-15)
+### Fixed
+- Fix compatibility issue with `click >= 8.1.4`.
+  ([1df93b2](https://github.com/tueda/python-grace/commit/1df93b288a5b0c39958133f63165661b3f439f91))
+
+
 <a name="0.0.8"></a>
 ## [0.0.8] (2021-11-25)
 ### Added
@@ -77,6 +84,7 @@
 - First release. This version provides GRACE 2.2.1 as it is.
 
 
+[0.0.9]: https://github.com/tueda/python-grace/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/tueda/python-grace/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/tueda/python-grace/compare/0.0.6...0.0.7
 [0.0.6]: https://github.com/tueda/python-grace/compare/0.0.5...0.0.6
