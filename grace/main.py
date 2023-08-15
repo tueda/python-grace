@@ -1,7 +1,7 @@
 """Main program."""
 
 import logging
-from typing import List, Sequence
+from typing import Any, Callable, List, Sequence
 
 import click
 
@@ -79,12 +79,12 @@ def _add_raw_commands() -> None:
     args = click.Argument(["args"], required=False, nargs=-1)
     context_settings = {"ignore_unknown_options": True, "help_option_names": []}
 
-    def make_callback(c: click.decorators.F) -> click.decorators.F:
+    def make_callback(c: Callable[..., Any]) -> Callable[..., Any]:
         @click.pass_context
         def callback(ctx: click.Context, args: Sequence[str]) -> None:
             c(args, ctx.obj["DEBUG"])
 
-        return callback  # type: ignore[return-value]
+        return callback
 
     for c in commands.raw_commands.values():
         if not c.available:
